@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Reflection;
+using Microsoft.VisualBasic.CompilerServices;
 
 namespace IEC.Common.Scope
 {
@@ -18,12 +19,28 @@ namespace IEC.Common.Scope
         }
 
         /// <inheritdoc />
-        public override IEnumerable<object?> GetElementaries()
+        public override IReadOnlyCollection<object?> GetElementaries()
         {
+            var result = new List<object?>();
+
             foreach (var p in _properties)
             {
-                yield return p.GetValue(this);
+                
+                try
+                {
+                    result.Add(p.GetValue(this));
+                }
+                catch
+                {
+                    //unknown error, we can perform nothing here
+                    //probably only-setter property here (object SomeProperty { set {...} })
+                    //or property code raised an exception
+                    //who knows...
+                    //just skip this property
+                }
             }
+
+            return result;
         }
 
     }
@@ -51,12 +68,14 @@ namespace IEC.Common.Scope
         }
 
         /// <inheritdoc />
-        public override IEnumerable<object?> GetElementaries()
+        public override IReadOnlyCollection<object?> GetElementaries()
         {
-            foreach (var o in Objects)
-            {
-                yield return o;
-            }
+            return Objects;
+
+            //foreach (var o in Objects)
+            //{
+            //    yield return o;
+            //}
         }
     }
 }

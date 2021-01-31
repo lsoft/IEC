@@ -38,7 +38,7 @@ namespace IEC.Common.Scope
         }
 
         /// <inheritdoc />
-        public abstract IEnumerable<object?> GetElementaries();
+        public abstract IReadOnlyCollection<object?> GetElementaries();
 
         /// <inheritdoc />
         public void Dispose()

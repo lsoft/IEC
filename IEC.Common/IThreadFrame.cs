@@ -5,7 +5,7 @@ namespace IEC.Common
 {
     public interface IThreadFrame
     {
-        IEnumerable<object?> GetElementaries();
+        IReadOnlyCollection<object?> GetElementaries();
 
         void GenerateStringRepresentation(
             StringBuilder stringBuilder
