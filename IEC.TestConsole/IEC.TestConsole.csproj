@@ -1,0 +1,17 @@
+<Project Sdk="Microsoft.NET.Sdk">
+
+  <PropertyGroup>
+    <OutputType>Exe</OutputType>
+    <TargetFramework>net5</TargetFramework>
+    <LangVersion>Latest</LangVersion>
+    <Nullable>Enable</Nullable>
+    <WarningsAsErrors>nullable;CS8766;CS8767</WarningsAsErrors>
+  </PropertyGroup>
+
+  <ItemGroup>
+    <ProjectReference Include="..\IEC.Common\IEC.Common.csproj" />
+    <ProjectReference Include="..\IEC.Target.Console\IEC.Target.Console.csproj" />
+    <ProjectReference Include="..\IEC.Target.SqlServer\IEC.Target.SqlServer.csproj" />
+  </ItemGroup>
+
+</Project>
