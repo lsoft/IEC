@@ -12,7 +12,30 @@
   </ItemGroup>
 
   <ItemGroup>
-    <ProjectReference Include="..\IEC.Common\IEC.Common.csproj" />
+    <ProjectReference Include="..\IEC.Common\IEC.Common.csproj" PrivateAssets="All" />
   </ItemGroup>
+
+
+  <PropertyGroup>
+<!--    <TargetsForTfmSpecificBuildOutput>$(TargetsForTfmSpecificBuildOutput);CopyProjectReferencesToPackage</TargetsForTfmSpecificBuildOutput>  -->
+    <PackageId>IEC</PackageId>
+    <PackageVersion>0.1.0.0-alpha</PackageVersion>
+    <Authors>ls</Authors>
+    <PackageLicenseExpression>MIT</PackageLicenseExpression>
+    <PackageProjectUrl>https://github.com/lsoft/IEC</PackageProjectUrl>
+    <!--<PackageIconUrl></PackageIconUrl>-->
+    <RepositoryUrl>https://github.com/lsoft/IEC</RepositoryUrl>
+    <PackageRequireLicenseAcceptance>false</PackageRequireLicenseAcceptance>
+    <Description>Application's internal errors catcher. Early prealpha.</Description>
+    <!--<PackageReleaseNotes>Summary of changes made in this release of the package or delete this line.</PackageReleaseNotes>-->
+    <PackageTags>exception, handling</PackageTags>
+    <NoPackageAnalysis>true</NoPackageAnalysis>
+  </PropertyGroup>
+
+  <ItemGroup>
+    <None Include="$(OutputPath)\IEC.Common.dll" Pack="true" PackagePath="lib/net5.0" Visible="true" /> 
+    <None Include="$(OutputPath)\IEC.Target.SqlServer.dll" Pack="true" PackagePath="lib/net5.0" Visible="true" /> 
+  </ItemGroup>
+
 
 </Project>

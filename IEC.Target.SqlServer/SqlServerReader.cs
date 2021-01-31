@@ -48,7 +48,7 @@ namespace IEC.Target.SqlServer
             DateTime exclusiveTo
             )
         {
-            var frames = ReadFrameFromDb(inclusiveFrom, exclusiveTo);
+            var frames = ReadFramesFromDb(inclusiveFrom, exclusiveTo);
 
             var frameGroups = (
                 from frame in frames
@@ -58,23 +58,26 @@ namespace IEC.Target.SqlServer
 
             foreach (var frameGroup in frameGroups)
             {
-                using (var fs = File.OpenRead(frameGroup.Key))
+                lock(TargetFileLocker.GetFileLocker(frameGroup.Key))
                 {
-                    foreach (var frame in frameGroup.OrderBy(f => f.Offset))
+                    using (var fs = File.OpenRead(frameGroup.Key))
                     {
-                        fs.Position = frame.Offset;
-
-                        var compressedBody = new byte[frame.Length];
-                        fs.Read(compressedBody, 0, compressedBody.Length);
-
-                        using (var targetStream = new MemoryStream(compressedBody))
+                        foreach (var frame in frameGroup.OrderBy(f => f.Offset))
                         {
-                            using (var decompressionStream = new GZipStream(targetStream, CompressionMode.Decompress))
+                            fs.Position = frame.Offset;
+
+                            var compressedBody = new byte[frame.Length];
+                            fs.Read(compressedBody, 0, compressedBody.Length);
+
+                            using (var targetStream = new MemoryStream(compressedBody))
                             {
-                                using (var sr = new StreamReader(decompressionStream, Encoding.UTF8))
+                                using (var decompressionStream = new GZipStream(targetStream, CompressionMode.Decompress))
                                 {
-                                    var body = sr.ReadToEnd();
-                                    frame.AppendBody(body);
+                                    using (var sr = new StreamReader(decompressionStream, Encoding.UTF8))
+                                    {
+                                        var body = sr.ReadToEnd();
+                                        frame.AppendBody(body);
+                                    }
                                 }
                             }
                         }
@@ -85,7 +88,7 @@ namespace IEC.Target.SqlServer
             return frames;
         }
 
-        private List<StoredFrame> ReadFrameFromDb(
+        private List<StoredFrame> ReadFramesFromDb(
             DateTime inclusiveFrom,
             DateTime exclusiveTo
             )
