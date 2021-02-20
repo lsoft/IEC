@@ -3,12 +3,12 @@ name: iec
 on:
   push:
     branches: [ main ]
-#    tags:
-#      - 0.*
+    tags:
+      - 0.*
   pull_request:
     branches: [ main ]
-#    tags:
-#      - 0.*
+    tags:
+      - 0.*
 
 jobs:
   build-and-publish:
