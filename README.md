@@ -1,5 +1,6 @@
 # IEC
-Application's internal errors catcher
+
+Application's internal errors catcher.
 
 This software generate dumps like
 
